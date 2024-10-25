@@ -29,8 +29,8 @@ type KeyCloakEndpoint struct {
 		JwksURI               string   `yaml:"-"`
 		EndSessionEndpoint    string   `yaml:"-"`
 		Client                struct {
-			ClientID     string `yaml:"client_id,omitempty"`
-			ClientSecret string `yaml:"-"`
+			ClientID     string `yaml:"client_id"`
+			ClientSecret string `yaml:"client_secret"`
 			GrantType    string `yaml:"grant_type"`
 		} `yaml:"client"`
 	} `yaml:"keycloak"`
@@ -65,7 +65,6 @@ func NewEndpoint() (*KeyCloakEndpoint, error) {
 	if err != nil {
 		return nil, err
 	}
-	kEndpoint.KeyCloak.Client.ClientSecret = os.Getenv("KEYCLOAK_CLIENT_SECRET")
 	if err := kEndpoint.FetchConfigData(); err != nil {
 		return nil, err
 	}
