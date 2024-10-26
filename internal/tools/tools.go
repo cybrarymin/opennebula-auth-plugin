@@ -14,11 +14,13 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
+// Parsing the urls to extract the url path
 func UrlParser(rawURL string) string {
 	pUrl, _ := url.Parse(rawURL)
 	return pUrl.Path
 }
 
+// Read raw http response and return them as string
 func ReadHTTPResponse(httpRes *http.Response) (string, error) {
 	defer httpRes.Body.Close()
 
@@ -30,6 +32,7 @@ func ReadHTTPResponse(httpRes *http.Response) (string, error) {
 	return string(body), nil
 }
 
+// json input decoder
 func FromJson(httpRes *http.Response, input interface{}) error {
 	if err := json.NewDecoder(httpRes.Body).Decode(input); err != nil {
 		return err
@@ -60,7 +63,6 @@ func JwtParser(tokenString string, jwks_uri string) (*jwt.Token, error) {
 	jwks, err := keyfunc.Get(jwks_uri, options)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create JWKS from resource at the given URL.\nError: %s", err.Error())
-
 	}
 
 	// Parse the JWT.
